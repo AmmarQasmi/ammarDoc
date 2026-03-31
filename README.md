@@ -65,6 +65,43 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+### 5. Authentication
+
+The app now uses cookie-based JWT auth with signup/login.
+
+Signup validation rules:
+
+- Valid email format is required
+- Password must be 8-64 characters and include uppercase, lowercase, number, and special character
+
+Seeded demo credentials:
+
+- Email: `owner@ajaia.local`
+- Password: `password123`
+
+- Email: `editor@ajaia.local`
+- Password: `password123`
+
+### 6. Sharing + Email Invites
+
+- Sharing currently supports Gmail recipients only (`@gmail.com`).
+- Owner can share by entering recipient email and choosing Viewer/Editor.
+- If recipient is not registered yet, the app creates an invited user placeholder and sends invite email (when EmailJS is configured).
+
+Required environment variables for invite email:
+
+- `EMAILJS_SERVICE_ID`
+- `EMAILJS_TEMPLATE_ID`
+- `EMAILJS_PUBLIC_KEY`
+- `EMAILJS_PRIVATE_KEY` (optional, recommended)
+- `NEXT_PUBLIC_APP_URL` (for example, `https://ammar-doc.vercel.app`)
+
+For Vercel deployment, add all auth and db envs too:
+
+- `DATABASE_URL`
+- `DIRECT_URL`
+- `JWT_SECRET`
+
 ## Project Structure
 
 ```
@@ -143,7 +180,15 @@ Rich text content is stored as JSON (Tiptap format) in the `documents.content_js
 ## Notes
 
 - **Demo Auth**: For this assignment, user switching is mocked. In production, use NextAuth, Clerk, or similar.
-- **File Uploads**: Start with txt/md import only; skip docx parsing for scope.
+- **File Uploads**: Supports `.txt` and `.md` only.
+- **Image Uploads in Notes**: Supported in the editor (embedded into rich-text content as part of document JSON).
+- **Import Behavior**:
+	1. From dashboard: upload creates a new editable document automatically.
+	2. From an open document: upload appends imported content to the current document.
+- **Sharing**:
+	1. Open a document and use the Share panel.
+	2. Enter recipient email and choose Viewer/Editor role.
+	3. Revoke access from the same panel.
 - **Real-time Collab**: Deferred (out of scope for 2.5-hour timebox).
 
 ## Submission
