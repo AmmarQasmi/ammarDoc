@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum AccessRole {
+  VIEWER
+  EDITOR
+}
+
+model User {
+  id                String           @id @default(cuid())
+  email             String           @unique
+  name              String
+  createdAt         DateTime         @default(now())
+  ownedDocuments    Document[]       @relation("DocumentOwner")
+  accessGrants      DocumentAccess[] @relation("AccessUser")
+  grantedAccesses   DocumentAccess[] @relation("GrantedByUser")
+  uploadedFileLinks FileImport[]     @relation("FileImportUploader")
+}
+
+model Document {
+  id          String           @id @default(cuid())
+  ownerUserId String
+  title       String
+  contentJson Json
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  owner       User             @relation("DocumentOwner", fields: [ownerUserId], references: [id], onDelete: Cascade)
+  accesses    DocumentAccess[]
+  fileImports FileImport[]
+
+  @@index([ownerUserId, updatedAt])
+  @@index([updatedAt])
+}
+
+model DocumentAccess {
+  documentId      String
+  userId          String
+  accessRole      AccessRole @default(EDITOR)
+  grantedByUserId String
+  grantedAt       DateTime   @default(now())
+  document        Document   @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  user            User       @relation("AccessUser", fields: [userId], references: [id], onDelete: Cascade)
+  grantedBy       User       @relation("GrantedByUser", fields: [grantedByUserId], references: [id], onDelete: Restrict)
+
+  @@id([documentId, userId])
+  @@index([userId, documentId])
+}
+
+model FileImport {
+  id               String    @id @default(cuid())
+  documentId       String?
+  uploadedByUserId String
+  originalFilename String
+  mimeType         String
+  sizeBytes        Int
+  storageUrlOrPath String
+  importedText     String?
+  createdAt        DateTime  @default(now())
+  document         Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  uploadedBy       User      @relation("FileImportUploader", fields: [uploadedByUserId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+}
