@@ -9,6 +9,7 @@ import {
   renameDocument,
   deleteDocument,
 } from "@/backend/documents/service";
+import { getDocumentPermission, Permission } from "@/backend/shared/permissions";
 import { createApiResponse, ApiErrorHandler } from "@/backend/shared/api-types";
 
 interface Params {
@@ -24,9 +25,21 @@ export async function GET(
     const userId = await getCurrentUserId(_request);
 
     const document = await getDocument(id, userId);
+    const permission = await getDocumentPermission(id, userId);
+
+    const payload = {
+      ...document,
+      permission: permission === Permission.OWNER
+        ? "OWNER"
+        : permission === Permission.EDITOR
+        ? "EDITOR"
+        : "VIEWER",
+      canEdit: permission === Permission.OWNER || permission === Permission.EDITOR,
+      canShare: permission === Permission.OWNER,
+    };
 
     return NextResponse.json(
-      createApiResponse(true, document),
+      createApiResponse(true, payload),
       { status: 200 }
     );
   } catch (error) {

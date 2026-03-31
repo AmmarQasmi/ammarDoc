@@ -21,6 +21,10 @@ export default function DocumentPage() {
         const data = await getDocumentById(params.id);
         setDoc(data);
       } catch (err) {
+        if (err instanceof Error && err.message === "UNAUTHORIZED") {
+          router.push("/auth");
+          return;
+        }
         setError(err instanceof Error ? err.message : "Could not load document");
       } finally {
         setLoading(false);

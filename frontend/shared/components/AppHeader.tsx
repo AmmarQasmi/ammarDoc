@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type MePayload = {
   id: string;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export default function AppHeader({ title }: Props) {
+  const router = useRouter();
   const [user, setUser] = useState<MePayload | null>(null);
 
   useEffect(() => {
@@ -29,14 +31,23 @@ export default function AppHeader({ title }: Props) {
         const json = (await response.json()) as ApiEnvelope<MePayload>;
         if (response.ok && json.success && json.data) {
           setUser(json.data);
+          return;
         }
+        router.push("/auth");
       } catch {
         setUser(null);
+        router.push("/auth");
       }
     }
 
     void loadMe();
-  }, []);
+  }, [router]);
+
+  async function onLogout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/auth");
+    router.refresh();
+  }
 
   return (
     <header className="app-header">
@@ -50,7 +61,8 @@ export default function AppHeader({ title }: Props) {
       </div>
       <div className="app-header-right">
         <span className="app-user-label">Logged in as</span>
-        <span className="app-user-name">{user?.name || "Demo User"}</span>
+        <span className="app-user-name">{user?.name || "User"}</span>
+        <button className="btn btn-ghost app-logout-btn" onClick={onLogout}>Logout</button>
       </div>
     </header>
   );

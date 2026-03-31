@@ -1,47 +1,61 @@
-// Mock authentication for demo purposes
-// In production, use real auth (NextAuth, Clerk, Auth0, etc.)
 import { prisma } from "@/lib/prisma";
+import { ApiErrorHandler, ERROR_CODES } from "@/backend/shared/api-types";
+import jwt from "jsonwebtoken";
 
-export const SEEDED_USERS = [
-  {
-    email: "owner@ajaia.local",
-    name: "Owner User",
-  },
-  {
-    email: "editor@ajaia.local",
-    name: "Editor User",
-  },
-];
+export const AUTH_COOKIE_NAME = "aq_auth_token";
+
+type AuthTokenPayload = {
+  userId: string;
+};
+
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT_SECRET is missing. Add it to your environment variables.");
+  }
+  return secret;
+}
+
+export function signAuthToken(payload: AuthTokenPayload): string {
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: "7d" });
+}
+
+export function verifyAuthToken(token: string): AuthTokenPayload | null {
+  try {
+    return jwt.verify(token, getJwtSecret()) as AuthTokenPayload;
+  } catch {
+    return null;
+  }
+}
 
 export async function getCurrentUserId(request?: Request): Promise<string> {
-  // Demo user selection via request header. Falls back to owner user.
-  const requestedEmail = request?.headers.get("x-demo-user-email") || SEEDED_USERS[0].email;
+  const cookieHeader = request?.headers.get("cookie") || "";
+  const token = extractCookieValue(cookieHeader, AUTH_COOKIE_NAME);
 
-  const currentUser = await prisma.user.findUnique({
-    where: { email: requestedEmail },
+  if (!token) {
+    throw new ApiErrorHandler(ERROR_CODES.UNAUTHORIZED, "Authentication required", 401);
+  }
+
+  const payload = verifyAuthToken(token);
+  if (!payload?.userId) {
+    throw new ApiErrorHandler(ERROR_CODES.UNAUTHORIZED, "Invalid auth token", 401);
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: payload.userId },
     select: { id: true },
   });
 
-  if (currentUser) {
-    return currentUser.id;
+  if (!user) {
+    throw new ApiErrorHandler(ERROR_CODES.UNAUTHORIZED, "User not found", 401);
   }
 
-  const fallbackUser = await prisma.user.findFirst({
-    orderBy: { createdAt: "asc" },
-    select: { id: true },
-  });
-
-  if (!fallbackUser) {
-    throw new Error("No users found in database. Run npm run prisma:seed first.");
-  }
-
-  return fallbackUser.id;
+  return user.id;
 }
 
-export function getCurrentUser(email: string) {
-  return SEEDED_USERS.find((u) => u.email === email) || SEEDED_USERS[0];
-}
-
-export function getAllUsers() {
-  return SEEDED_USERS;
+function extractCookieValue(cookieHeader: string, key: string): string | null {
+  const cookies = cookieHeader.split(";").map((entry) => entry.trim());
+  const cookie = cookies.find((entry) => entry.startsWith(`${key}=`));
+  if (!cookie) return null;
+  return decodeURIComponent(cookie.slice(key.length + 1));
 }

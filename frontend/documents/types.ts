@@ -18,6 +18,9 @@ export type DocumentItem = {
   contentJson: TiptapDoc;
   createdAt: string;
   updatedAt: string;
+  permission?: "OWNER" | "EDITOR" | "VIEWER";
+  canEdit?: boolean;
+  canShare?: boolean;
 };
 
 export type DocumentsPayload = {
@@ -34,4 +37,18 @@ export type ApiEnvelope<T> = {
     details?: Record<string, unknown>;
   };
   timestamp: string;
+};
+
+export type UserItem = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+export type ShareItem = {
+  userId: string;
+  email: string;
+  name: string;
+  accessRole: "VIEWER" | "EDITOR";
+  grantedAt: string;
 };
