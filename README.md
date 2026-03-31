@@ -74,13 +74,15 @@ Signup validation rules:
 - Valid email format is required
 - Password must be 8-64 characters and include uppercase, lowercase, number, and special character
 
-Seeded demo credentials:
+Reviewer test credentials:
 
-- Email: `owner@ajaia.local`
-- Password: `password123`
+- Email: `ammarsqasmi@gmail.com`
+- Password: `aq123456-`
 
-- Email: `editor@ajaia.local`
-- Password: `password123`
+Additional sharing test account:
+
+- Email: `qasmiammar60@gmail.com`
+- Password: `aq123456-`
 
 ### 6. Sharing + Email Invites
 
@@ -133,17 +135,10 @@ npm run prisma:push        # Push schema to database
 npm run prisma:seed        # Seed demo data
 ```
 
-## Seeded Users for Testing
+## Testing Accounts
 
-**User 1 (Owner):**
-- Email: owner@ajaia.local
-- Name: Owner User
-
-**User 2 (Editor):**
-- Email: editor@ajaia.local
-- Name: Editor User
-
-Currently, user selection is mocked. A simple user switcher will be added to the UI.
+- Primary: `ammarsqasmi@gmail.com` / `aq123456-`
+- Secondary: `qasmiammar60@gmail.com` / `aq123456-`
 
 ## Architecture Notes
 
