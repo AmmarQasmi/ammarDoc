@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
     "prisma:format": "prisma format",
@@ -20,6 +23,7 @@
     "@tiptap/extension-bullet-list": "^3.21.0",
     "@tiptap/extension-heading": "^3.21.0",
     "@tiptap/extension-ordered-list": "^3.21.0",
+    "@tiptap/extension-underline": "^3.21.0",
     "@tiptap/pm": "^3.21.0",
     "@tiptap/react": "^3.21.0",
     "@tiptap/starter-kit": "^3.21.0",
@@ -33,7 +37,10 @@
     "typescript": "^6.0.2"
   },
   "devDependencies": {
-    "prisma": "^6.6.0"
+    "@vitest/ui": "^4.1.2",
+    "happy-dom": "^20.8.9",
+    "prisma": "^6.6.0",
+    "vitest": "^4.1.2"
   },
   "prisma": {
     "seed": "node prisma/seed.mjs"

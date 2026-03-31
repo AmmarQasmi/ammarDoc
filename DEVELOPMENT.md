@@ -3,76 +3,81 @@
 ## Status Overview
 
 **Target Submission:** 2.5 hours from start  
-**Current Phase:** 1 – Foundation Setup (COMPLETE)  
-**Ready to Push:** Yes – GitHub ready, database initialized
+**Current Phase:** 2 – Backend Implementation (COMPLETE)  
+**Time Remaining:** ~1.5 hours for frontend + polish
 
 ---
 
 ## Completed ✅
 
-- [x] Prisma schema with 3NF design (users, documents, document_access, file_imports)
-- [x] Supabase PostgreSQL setup + session pooler config
-- [x] Database seeding (2 test users)
-- [x] Next.js 16 app router scaffold
+Phase 1 (Foundation):
+- [x] Prisma schema with 3NF design
+- [x] Supabase PostgreSQL + session pooler
+- [x] Database seeding
+- [x] Next.js app router scaffold
 - [x] TypeScript configuration
-- [x] Tiptap editor package (ready to integrate)
-- [x] Prisma client singleton (lib/prisma.ts)
-- [x] Mock auth helpers (lib/auth.ts)
-- [x] Environment setup (.env.local, .env.example)
+- [x] Environment setup
+
+Phase 2 (Backend – DONE):
+- [x] Document service layer (CRUD operations)
+- [x] Permission/authorization logic
+- [x] Input validation utilities
+- [x] API error handling
+- [x] 6 REST API endpoints:
+  - POST /api/documents (create)
+  - GET /api/documents (list)
+  - GET /api/documents/[id] (fetch)
+  - PUT /api/documents/[id] (rename)
+  - PUT /api/documents/[id]/content (save content)
+  - DELETE /api/documents/[id] (delete)
+- [x] Comprehensive unit tests (vitest)
+- [x] Backend API documentation
 - [x] Production build passes (no errors)
-- [x] README with setup instructions
 
 ---
 
-## Phase 2: Core Document Flows 🎯 (Next 35 min)
+## Phase 3: Frontend Implementation 🎨 (~1.5 hours remaining)
 
 ### Pages to Create
 
 - [ ] `app/page.tsx` → Dashboard (list owned + shared docs)
 - [ ] `app/documents/new/page.tsx` → Quick create
 - [ ] `app/documents/[id]/page.tsx` → Editor page
-- [ ] `app/documents/[id]/sharing/page.tsx` → Sharing panel
-
-### API Routes to Create
-
-- [ ] `app/api/documents/route.ts` → GET (list), POST (create)
-- [ ] `app/api/documents/[id]/route.ts` → GET, PUT (rename), DELETE
-- [ ] `app/api/documents/[id]/content/route.ts` → PUT (save content)
-- [ ] `app/api/documents/[id]/share/route.ts` → POST (grant), DELETE (revoke)
+- [ ] `app/documents/[id]/sharing/page.tsx` → Sharing panel (optional)
 
 ### Components to Create
 
-- [ ] `components/DocumentList.tsx` → Render docs with owned/shared filter
-- [ ] `components/DocumentHeader.tsx` → Title + rename field
-- [ ] `components/Editor.tsx` → Tiptap integration
-- [ ] `components/ShareDialog.tsx` → User selector + role picker
-- [ ] `components/UserSwitcher.tsx` → Demo user picker (header)
+- [ ] `frontend/components/DocumentList.tsx` → Render docs with owned/shared filter
+- [ ] `frontend/components/DocumentHeader.tsx` → Title + rename field
+- [ ] `frontend/components/EditorUI.tsx` → Tiptap integration + toolbar
+- [ ] `frontend/components/ShareDialog.tsx` → User selector + role picker
+- [ ] `frontend/components/UserSwitcher.tsx` → Demo user picker (header)
 
----
-
-## Phase 3: Advanced Features 🚀 (25 min)
+### Features to Implement
 
 - [ ] Rich-text toolbar (bold, italic, underline, h1–h3, lists)
-- [ ] File upload handler + txt/md import
+- [ ] File upload handler + txt/md import (optional if time allows)
 - [ ] Permission guards on routes/components
-- [ ] Error handling + validation messages
-- [ ] Loading states + optimistic UI
+- [ ] Error messages + loading states
+- [ ] Optimistic UI updates
 
 ---
 
-## Phase 4: Testing + Polish ✨ (10 min)
+## Phase 4: Testing + Polish ✨ (~30 min)
 
-- [ ] Write permission test (vitest)
-- [ ] Manual QA checklist
-- [ ] Copy ARCHITECTURE.md to submission folder
+- [ ] Manual QA walkthrough
+- [ ] Browser test (Chrome/Edge)
+- [ ] Verify all 5 core features work end-to-end
+- [ ] Copy ARCHITECTURE.md to submission
 - [ ] Draft AI workflow note
 
 ---
 
-## Phase 5: Deployment + Submission 🚢 (Optional)
+## Phase 5: Deployment + Submission 🚢 (Optional/Final)
 
+- [ ] Push to GitHub
 - [ ] Deploy to Vercel
-- [ ] Record walkthrough video
+- [ ] Record walkthrough video (3-5 min)
 - [ ] Create SUBMISSION.md
 - [ ] Package deliverables
 
@@ -85,34 +90,38 @@
 3. **Session/Direct URLs** – Best practice for Prisma + Postgres
 4. **Seeded Users** – Fast demo, no OAuth needed
 5. **Tiptap Editor** – Lightweight, JSON-based, extensible
-6. **3NF Schema** – Clean, normalizable, interview-ready
+6. Backend Implementation Complete ✅
 
----
+**Service Layer:** `backend/documents/service.ts`
+- Full CRUD: create, read (single + list), update (rename + content), delete
+- Permission checks: canView, canEdit, canDelete, canShare
+- Error handling with typed ApiErrorHandler
 
-## Known Constraints
+**Validation:** `backend/shared/validation.ts`
+- Document title validation (required, max 255 chars)
+- Content format validation (Tiptap JSON structure)
+- User ID validation
+- Composed validation for multi-field checks
 
-- ⏱️ 2.5 hours total (including this setup time)
-- 💾 No real-time collaboration (OT/CRDT out of scope)
-- 📦 No docx support (txt/md only)
-- 🔐 No production auth (seeded users for demo)
-- 📁 No persistent file uploads (metadata only for now)
+**Permissions:** `backend/shared/permissions.ts`
+- Owner, Editor, Viewer, None roles
+- getDocumentPermission(documentId, userId) → Role
+- canViewDocument, canEditDocument, canDeleteDocument, canShareDocument
 
----
+**API Routes:**
+- `app/api/documents/route.ts` → GET (list), POST (create)
+- `app/api/documents/[id]/route.ts` → GET, PUT, DELETE
+- `app/api/documents/[id]/content/route.ts` → PUT (save)
 
-## Next Action
+**Tests:** `backend/documents/service.test.ts`
+- Vitest unit tests covering all operations
+- Permission logic verified
+- Error cases tested
+- Run with: `npm test`
 
-Run:
-
-```bash
-git init
-git add .
-git commit -m "Initial: Prisma + Next.js scaffold"
-git remote add origin https://github.com/<you>/ajaia.git
-git push -u origin main
-```
-
-Then start Phase 2 in a new branch:
-
-```bash
-git checkout -b feat/core-flows
-```
+**Documentation:** `BACKEND_API.md`
+- Complete API reference
+- Request/response examples
+- Error codes
+- Permission matrix
+- Content format specification

@@ -76,3 +76,286 @@ textarea {
 .ProseMirror li {
   margin: 0.25rem 0;
 }
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #dbeafe;
+  background: #f0f9ff;
+}
+
+.app-logo-link:hover {
+  background: #e0f2fe;
+}
+
+.app-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #0f766e;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.app-logo-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.app-header-divider {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.app-header-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55vw;
+}
+
+.app-header-right {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.app-user-label {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.app-user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f766e;
+}
+
+.page-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero-card {
+  background: linear-gradient(120deg, #0b3d2e, #155e75);
+  color: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.hero-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  opacity: 0.9;
+  margin-top: 6px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.gap-xs {
+  gap: 8px;
+}
+
+.gap-sm {
+  gap: 12px;
+}
+
+.grow {
+  flex: 1;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.top-gap {
+  margin-top: 12px;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #0891b2;
+  box-shadow: 0 0 0 2px rgba(8, 145, 178, 0.12);
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #0f766e;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #115e59;
+}
+
+.btn-ghost {
+  background: #f8fafc;
+  color: #1f2937;
+  border-color: #cbd5e1;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.toolbar {
+  margin-bottom: 12px;
+}
+
+.doc-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.doc-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.doc-link {
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  background: white;
+  border-radius: 10px;
+}
+
+.doc-link:hover {
+  background: #f8fafc;
+}
+
+.doc-title {
+  display: block;
+  font-weight: 600;
+}
+
+.doc-meta {
+  display: block;
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.muted {
+  color: #64748b;
+  font-size: 0.92rem;
+}
+
+.error-text {
+  margin-top: 10px;
+  color: #b91c1c;
+  font-size: 0.9rem;
+}
+
+.success-text {
+  margin-top: 10px;
+  color: #166534;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .page-wrap {
+    padding: 14px;
+  }
+
+  .mobile-stack {
+    flex-direction: column;
+  }
+
+  .app-header-title {
+    max-width: 36vw;
+  }
+
+  .app-header-divider {
+    display: none;
+  }
+}
