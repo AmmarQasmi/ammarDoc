@@ -18,7 +18,7 @@
 ## Review Credentials
 
 - Email: ammarsqasmi@gmail.com
-- Password: aq123456-
+- Password: Aq123456-
 
 ## Feature Status
 
